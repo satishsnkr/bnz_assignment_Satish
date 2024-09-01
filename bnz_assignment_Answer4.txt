@@ -1,0 +1,38 @@
+To ensure the input data is of adequate quality and improve the pipeline, we can implement a series of data cleansing and validation steps programmatically
+
+1. Handling Duplicates -> Identify duplicate rows based on unique identifiers or a combination of key columns
+
+2. Correcting Data Types -> Ensure that each column contains data of the correct type , Convert data to the correct types where possible
+
+3. Handling Missing Data -> Fill in missing values using statistical methods like mean, median, mode
+                         -> In cases where missing data is extensive or crucial, consider removing rows or columns with significant gaps.
+                        -> Assign default values where appropriate
+
+4. Validating Data Ranges -> Ensure numeric values fall within expected ranges.
+
+5. Data Consistency Checks -> Check for consistency between related fields.
+
+6. Outlier Detection -> Use statistical techniques like Z-score or IQR (Interquartile Range) to identify and manage outliers that may indicate data entry errors or exceptional cases.
+
+Some Examples:- 
+
+Remove Duplicates:  df.drop_duplicates(inplace=True)
+
+Check and Correct Data Types:
+
+df['ColumnName'] = pd.to_numeric(df['ColumnName'], errors='coerce')  # Convert to numeric and coerce errors to NaN
+df['DateColumn'] = pd.to_datetime(df['DateColumn'], errors='coerce')  # Convert to datetime
+
+Handle Missing Data:
+
+df.fillna({'ColumnName': df['ColumnName'].mean()}, inplace=True)  # Fill missing numeric data with the mean
+df.dropna(subset=['RequiredColumn'], inplace=True)  # Drop rows with missing required fields
+
+Validate Data Ranges:
+
+df = df[(df['NumericColumn'] >= 0) & (df['NumericColumn'] <= 100)]  # Keep values within a specified range
+
+Outlier Detection:
+
+z_scores = (df['NumericColumn'] - df['NumericColumn'].mean()) / df['NumericColumn'].std()
+df = df[(z_scores > -3) & (z_scores < 3)]  # Remove outliers beyond 3 standard deviations
